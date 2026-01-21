@@ -1,33 +1,28 @@
----
-description: /backend - Chế độ tập trung Backend cho phát triển API
-trigger: "/backend"
----
-
 # Backend Focus Mode
 
-Khi chế độ này được kích hoạt, AI Agent sẽ:
+When this mode is activated, the AI Agent will:
 
-## Tư Duy & Ưu Tiên
+## Mindset & Priorities
 
-1. **Ưu tiên Backend** - Mọi quyết định đều xoay quanh API và database
-2. **Security First** - Luôn cân nhắc bảo mật trong mỗi quyết định
-3. **Performance** - Tối ưu query, caching, và response time
+1. **Backend First** - Every decision revolves around API and database.
+2. **Security First** - Always consider security in every decision.
+3. **Performance** - Optimize queries, caching, and response time.
 
-## Quy Trình Làm Việc
+## Workflow
 
-### 1. Khi Nhận Yêu Cầu Mới
-1. Phân tích yêu cầu từ góc độ API
-2. Xác định entities và relationships
-3. Thiết kế endpoint structure
-4. Xem xét authentication/authorization
+### 1. New Requirement Analysis
+1. Analyze requirements from an API perspective.
+2. Identify entities and relationships.
+3. Design endpoint structure.
+4. Review authentication/authorization requirements.
 
-### 2. Khi Viết Code
-1. **Controller** - Chỉ xử lý HTTP, không có business logic
-2. **Service** - Toàn bộ business logic ở đây
-3. **Repository** - Data access, query optimization
-4. **DTO** - Validate input, transform output
+### 2. Coding Standards
+1. **Controller** - Handle HTTP requests only, NO business logic.
+2. **Service** - Contains ALL business logic.
+3. **Repository** - Data access and query optimization.
+4. **DTO** - Input validation and output transformation.
 
-### 3. Response Format (Bắt Buộc)
+### 3. Response Format (Mandatory)
 ```json
 {
   "success": true,
@@ -38,19 +33,19 @@ Khi chế độ này được kích hoạt, AI Agent sẽ:
 }
 ```
 
-## Checklist Mỗi Endpoint
+## Endpoint Checklist
 
-- [ ] Input validation với DTO
+- [ ] Input validation with DTO
 - [ ] Authorization check
-- [ ] Business logic trong Service
+- [ ] Business logic in Service
 - [ ] Proper error handling
 - [ ] Correct HTTP status code
 - [ ] API documentation (Swagger/OpenAPI)
-- [ ] Unit test cho Service
+- [ ] Unit test for Service
 
-## Câu Hỏi Tự Đặt
+## Self-Correction Questions
 
-1. "Endpoint này có idempotent không?"
-2. "Cần cache không? Cache invalidation như thế nào?"
-3. "Query có N+1 problem không?"
-4. "Error handling đã đủ specific chưa?"
+1. "Is this endpoint idempotent?"
+2. "Is caching needed? How to invalidate?"
+3. "Is there an N+1 query problem?"
+4. "Is error handling specific enough?"

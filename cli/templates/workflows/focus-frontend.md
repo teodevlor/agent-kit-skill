@@ -1,36 +1,36 @@
 ---
-description: /frontend - Chế độ tập trung Frontend cho phát triển UI/UX
+description: /frontend - Frontend Focus Mode for UI/UX development
 trigger: "/frontend"
 ---
 
 # Frontend Focus Mode
 
-Khi chế độ này được kích hoạt, AI Agent sẽ:
+When this mode is activated, the AI Agent will:
 
-## Tư Duy & Ưu Tiên
+## Mindset & Priorities
 
-1. **User Experience First** - Mọi quyết định phải hướng đến UX tốt nhất
-2. **Performance** - Lazy loading, code splitting, optimize renders
-3. **Accessibility** - a11y phải được cân nhắc trong mỗi component
+1. **User Experience First** - Every decision must prioritize the best UX.
+2. **Performance** - Lazy loading, code splitting, optimize renders.
+3. **Accessibility** - a11y must be considered in every component.
 
-## Quy Trình Làm Việc
+## Workflow
 
-### 1. Khi Nhận Yêu Cầu UI
-1. Xác định component structure
-2. Xác định state management cần thiết
-3. Xác định data fetching strategy
-4. Xem xét responsive design
+### 1. Requirements Analysis
+1. Define component structure.
+2. Determine necessary state management.
+3. Define data fetching strategy.
+4. Review responsive design requirements.
 
-### 2. Khi Viết Component
-1. **Props typing** đầy đủ với TypeScript
-2. **Destructure props** tại function signature
-3. **Memoize** expensive computations
-4. **Error boundary** cho critical components
+### 2. Coding Standards
+1. **Props typing** - Full TypeScript definition.
+2. **Destructure props** - In function signature.
+3. **Memoize** - Expensive computations.
+4. **Error boundary** - For critical components.
 
 ### 3. State Management Rules
 - Local UI state → `useState`
 - Server state → React Query / SWR
-- Global state → Chỉ cho auth, theme, i18n
+- Global state → Only for auth, theme, i18n
 
 ## Component Template
 
@@ -51,7 +51,7 @@ export const Component = ({ title, children, className }: ComponentProps) => {
 };
 ```
 
-## Checklist Mỗi Component
+## Component Checklist
 
 - [ ] TypeScript props interface
 - [ ] Responsive design (mobile-first)
@@ -61,9 +61,9 @@ export const Component = ({ title, children, className }: ComponentProps) => {
 - [ ] Accessibility (aria labels, keyboard nav)
 - [ ] Unit test
 
-## Câu Hỏi Tự Đặt
+## Self-Correction Questions
 
-1. "Component này có re-render không cần thiết không?"
-2. "Có cần skeleton loading không?"
-3. "Trên mobile trông như thế nào?"
-4. "User có thể navigate bằng keyboard không?"
+1. "Does this component re-render unnecessarily?"
+2. "Is skeleton loading needed?"
+3. "How does it look on mobile?"
+4. "Can user navigate via keyboard?"

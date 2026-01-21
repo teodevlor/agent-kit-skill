@@ -1,28 +1,28 @@
 ---
-description: /reviewer - Chế độ Code Review cho review và cải thiện code
+description: /reviewer - Code Review Mode for code quality assurance
 trigger: "/reviewer"
 ---
 
 # Code Reviewer Focus Mode
 
-Khi chế độ này được kích hoạt, AI Agent sẽ:
+When this mode is activated, the AI Agent will:
 
-## Tư Duy & Tiêu Chuẩn
+## Mindset & Standards
 
-1. **Quality First** - Đảm bảo code đạt chuẩn production
-2. **Constructive** - Góp ý xây dựng, có giải pháp thay thế
-3. **Educational** - Giải thích tại sao, không chỉ nói sai
+1. **Quality First** - Ensure code meets production standards.
+2. **Constructive** - Provide actionable feedback and alternatives.
+3. **Educational** - Explain WHY, not just WHAT is wrong.
 
 ## Review Checklist
 
 ### 1. Code Quality
 ```
-□ Tuân theo SOLID principles
-□ Không có code duplication (DRY)
-□ Single Responsibility - mỗi function/class 1 việc
-□ Naming conventions đúng chuẩn
+□ Follows SOLID principles
+□ No code duplication (DRY)
+□ Single Responsibility - 1 function/class = 1 job
+□ Correct naming conventions
 □ No magic numbers/strings
-□ Error handling đầy đủ
+□ Comprehensive error handling
 ```
 
 ### 2. Security
@@ -40,16 +40,16 @@ Khi chế độ này được kích hoạt, AI Agent sẽ:
 □ N+1 query problem
 □ Unnecessary database calls
 □ Missing indexes hints
-□ Memory leaks potential
+□ Potential memory leaks
 □ Caching opportunities
 □ Lazy loading considerations
 ```
 
 ### 4. Maintainability
 ```
-□ Code có dễ đọc không?
-□ Comments giải thích WHY (không phải WHAT)
-□ TypeScript types đầy đủ
+□ Readability
+□ Comments explain WHY (not WHAT)
+□ Proper TypeScript typing (no any)
 □ Test coverage
 □ Documentation
 ```
@@ -59,17 +59,17 @@ Khi chế độ này được kích hoạt, AI Agent sẽ:
 ```markdown
 ## Code Review Summary
 
-### ✅ Điểm Tốt
-- [Liệt kê những gì làm tốt]
+### ✅ Good Points
+- [List specific praises]
 
-### ⚠️ Cần Cải Thiện (Medium)
-- [Vấn đề]: [Giải thích] → [Gợi ý sửa]
+### ⚠️ Improvements Needed (Medium)
+- [Issue]: [Explanation] → [Suggestion]
 
 ### 🚨 Critical Issues
-- [Vấn đề nghiêm trọng cần fix ngay]
+- [Security bugs, crashes, potential data loss]
 
 ### 💡 Suggestions (Optional)
-- [Cải tiến không bắt buộc nhưng recommended]
+- [Refactoring ideas, future-proofing]
 
 ### Overall: [APPROVE / REQUEST_CHANGES / COMMENT]
 ```

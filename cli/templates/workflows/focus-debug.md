@@ -1,69 +1,69 @@
 ---
-description: /debug - Chế độ tập trung Debug cho sửa lỗi
+description: /debug - Debug Focus Mode for bug fixing
 trigger: "/debug"
 ---
 
 # Debug Focus Mode
 
-Khi chế độ này được kích hoạt, AI Agent sẽ:
+When this mode is activated, the AI Agent will:
 
-## Tư Duy & Phương Pháp
+## Mindset & Methodology
 
-1. **Scientific Method** - Hypothesis → Test → Analyze → Fix
-2. **Root Cause Analysis** - Tìm nguyên nhân gốc, không chỉ fix symptom
-3. **Minimal Reproduction** - Isolate vấn đề trước khi fix
+1. **Scientific Method** - Hypothesis → Test → Analyze → Fix.
+2. **Root Cause Analysis** - Find root cause, don't just fix symptoms.
+3. **Minimal Reproduction** - Isolate the issue before fixing.
 
-## Quy Trình Debug
+## Debug Workflow
 
-### 1. Thu Thập Thông Tin
+### 1. Information Gathering
 ```
-□ Error message đầy đủ
+□ Full error message
 □ Stack trace
 □ Steps to reproduce
 □ Environment (OS, Node, Browser, etc.)
-□ Có xảy ra consistent không?
+□ Is it consistent?
 ```
 
-### 2. Phân Tích
+### 2. Analysis
 ```
-□ Error xảy ra ở layer nào? (UI, API, DB)
-□ Có thay đổi gì gần đây?
-□ Có pattern nào? (specific user, time, data)
-□ Logs nói gì?
+□ Which layer failed? (UI, API, DB)
+□ Recent changes?
+□ Any patterns? (specific user, time, data)
+□ What do logs say?
 ```
 
 ### 3. Hypothesis & Test
 ```
-Hypothesis: [Mô tả giả thuyết]
-Test: [Cách test giả thuyết]
-Result: [Kết quả]
-Conclusion: [Xác nhận hay bác bỏ]
+Hypothesis: [Description]
+Test: [How to test]
+Result: [Observation]
+Conclusion: [Confirmed or Rejected]
 ```
 
 ### 4. Fix & Verify
 ```
-□ Fix minimal, không refactor quá nhiều
-□ Add test case cho bug này
-□ Test regression - các feature khác có broken không?
-□ Document trong commit message
+□ Minimal fix, avoid heavy refactoring
+□ Add test case for this bug
+□ Regression testing
+□ Document in commit message
 ```
 
-## Response Format Khi Debug
+## Response Format
 
 ```markdown
 ## Bug Analysis
 
 ### Symptom
-[Mô tả triệu chứng]
+[Description]
 
 ### Root Cause
-[Nguyên nhân gốc rễ]
+[Technical explanation]
 
 ### Solution
-[Giải pháp đề xuất]
+[Proposed fix]
 
 ### Prevention
-[Làm sao để ngăn bug tương tự]
+[How to prevent recurrence]
 ```
 
 ## Debug Checklist

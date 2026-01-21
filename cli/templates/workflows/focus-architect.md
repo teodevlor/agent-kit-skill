@@ -1,32 +1,32 @@
 ---
-description: /architect - Chế độ Architect cho thiết kế hệ thống
+description: /architect - Architect Focus Mode for system design
 trigger: "/architect"
 ---
 
 # Architect Focus Mode
 
-Khi chế độ này được kích hoạt, AI Agent sẽ:
+When this mode is activated, the AI Agent will:
 
-## Tư Duy & Ưu Tiên
+## Mindset & Priorities
 
-1. **Long-term Vision** - Thiết kế cho 2-3 năm tới, không chỉ hiện tại
-2. **Scalability** - "Nếu user base tăng 10x thì sao?"
-3. **Maintainability** - Code có dễ maintain và onboard người mới không?
+1. **Long-term Vision** - Design for 2-3 years ahead, not just today.
+2. **Scalability** - "What if user base grows 10x?".
+3. **Maintainability** - Is the code easy to maintain and onboard new engineers?
 
-## Quy Trình Architect
+## Architect Workflow
 
 ### 1. Understand Requirements
 ```
-□ Business requirements là gì?
+□ What are the business requirements?
 □ Non-functional requirements (scale, performance, security)?
 □ Constraints (budget, deadline, team size)?
-□ Integration với systems khác?
+□ Integration with other systems?
 ```
 
 ### 2. Define Architecture
 ```
 □ High-level architecture diagram
-□ Components và responsibilities
+□ Components and responsibilities
 □ Data flow
 □ Technology stack selection
 □ Trade-offs documentation
@@ -47,10 +47,10 @@ Khi chế độ này được kích hoạt, AI Agent sẽ:
 ## Architecture Proposal
 
 ### 1. Context & Requirements
-[Tóm tắt yêu cầu và constraints]
+[Summary of requirements and constraints]
 
 ### 2. Proposed Architecture
-[Diagram hoặc mô tả high-level]
+[Diagram or high-level description]
 
 ### 3. Component Breakdown
 | Component | Responsibility | Technology |
@@ -58,7 +58,7 @@ Khi chế độ này được kích hoạt, AI Agent sẽ:
 | ... | ... | ... |
 
 ### 4. Data Model
-[ERD hoặc schema design]
+[ERD or schema design]
 
 ### 5. Trade-offs Analysis
 | Option | Pros | Cons |
@@ -67,10 +67,10 @@ Khi chế độ này được kích hoạt, AI Agent sẽ:
 | B | ... | ... |
 
 ### 6. Recommendation
-[Giải pháp đề xuất với lý do]
+[Recommended solution with reasoning]
 
 ### 7. Implementation Roadmap
-[Phases và milestones]
+[Phases and milestones]
 ```
 
 ## Design Patterns Arsenal
@@ -98,26 +98,26 @@ Khi chế độ này được kích hoạt, AI Agent sẽ:
 ## Architecture Decision Record (ADR)
 
 ```markdown
-# ADR-001: [Tên quyết định]
+# ADR-001: [Title]
 
 ## Status
 [Proposed | Accepted | Deprecated | Superseded]
 
 ## Context
-[Bối cảnh và vấn đề cần giải quyết]
+[Context and problem statement]
 
 ## Decision
-[Quyết định được đưa ra]
+[The decision made]
 
 ## Consequences
-[Hệ quả positive và negative]
+[Positive and negative consequences]
 ```
 
-## Checklist Trước Khi Finalize
+## Finalization Checklist
 
-- [ ] Có xử lý được scale x10 không?
-- [ ] Security đã được xem xét?
-- [ ] Có single point of failure không?
-- [ ] Monitoring và observability?
+- [ ] Can it handle x10 scale?
+- [ ] Is security fully reviewed?
+- [ ] Is there any single point of failure?
+- [ ] Monitoring and observability plan?
 - [ ] Disaster recovery plan?
-- [ ] Cost estimation reasonable?
+- [ ] Is cost estimation reasonable?

@@ -298,6 +298,16 @@ async function setupCursor(kitRoot, dest, answers) {
         await fs.copy(rulesSrc, path.join(dest, '.cursorrules'));
     }
 
+    // Copy Resources (Knowledge, Rules)
+    const knowledgeSrc = path.join(kitRoot, 'knowledge');
+    if (await fs.pathExists(knowledgeSrc)) {
+        await fs.copy(knowledgeSrc, path.join(cursorDir, 'knowledge'));
+    }
+    const rulesDirSrc = path.join(kitRoot, 'rules');
+    if (await fs.pathExists(rulesDirSrc)) {
+        await fs.copy(rulesDirSrc, path.join(cursorDir, 'rules'));
+    }
+
     const skillsSrc = path.join(kitRoot, 'skills');
     const skillsDest = path.join(cursorDir, 'skills');
     await fs.ensureDir(skillsDest);
@@ -339,9 +349,19 @@ async function setupCursor(kitRoot, dest, answers) {
         };
         const skillName = stackMapping[answers.stack];
         if (skillName) {
-            const src = path.join(skillsSrc, skillName);
-            if (await fs.pathExists(src)) {
-                await fs.copy(src, path.join(skillsDest, skillName));
+            // Handle array or string
+            if (Array.isArray(skillName)) {
+                for (const name of skillName) {
+                    const src = path.join(skillsSrc, name);
+                    if (await fs.pathExists(src)) {
+                        await fs.copy(src, path.join(skillsDest, name));
+                    }
+                }
+            } else {
+                const src = path.join(skillsSrc, skillName);
+                if (await fs.pathExists(src)) {
+                    await fs.copy(src, path.join(skillsDest, skillName));
+                }
             }
         }
     }
@@ -357,6 +377,12 @@ async function setupCursor(kitRoot, dest, answers) {
             await fs.copy(cicdSrc, path.join(skillsDest, 'devops-cicd'));
         }
     }
+
+    // Copy Workflows
+    const workflowsSrc = path.join(kitRoot, 'workflows');
+    if (await fs.pathExists(workflowsSrc)) {
+        await fs.copy(workflowsSrc, path.join(cursorDir, 'workflows'));
+    }
 }
 
 async function setupWindsurf(kitRoot, dest, answers) {
@@ -370,6 +396,20 @@ async function setupWindsurf(kitRoot, dest, answers) {
     const agentsSrc = path.join(kitRoot, 'agents.md.template');
     if (await fs.pathExists(agentsSrc)) {
         await fs.copy(agentsSrc, path.join(dest, 'AGENTS.md'));
+    }
+
+    // Copy Resources (Knowledge, Rules, Workflows)
+    const knowledgeSrc = path.join(kitRoot, 'knowledge');
+    if (await fs.pathExists(knowledgeSrc)) {
+        await fs.copy(knowledgeSrc, path.join(windsurfDir, 'knowledge'));
+    }
+    const rulesDirSrc = path.join(kitRoot, 'rules');
+    if (await fs.pathExists(rulesDirSrc)) {
+        await fs.copy(rulesDirSrc, path.join(windsurfDir, 'rules'));
+    }
+    const workflowsSrc = path.join(kitRoot, 'workflows');
+    if (await fs.pathExists(workflowsSrc)) {
+        await fs.copy(workflowsSrc, path.join(windsurfDir, 'workflows'));
     }
 
     const skillsSrc = path.join(kitRoot, 'skills');
@@ -398,17 +438,33 @@ async function setupWindsurf(kitRoot, dest, answers) {
             'nestjs': 'backend-nestjs',
             'laravel': 'backend-laravel',
             'go': 'backend-go',
+            'python': 'backend-python',
+            'express': 'backend-express',
             'nextjs': 'frontend-nextjs',
             'vue': 'frontend-vue',
+            'react': 'frontend-react',
+            'flutter': 'mobile-flutter',
+            'react-native': 'mobile-react-native',
+            'swiftui': 'mobile-swiftui',
+            'android': 'mobile-android',
+            'nextjs-nestjs': ['frontend-nextjs', 'backend-nestjs'],
+            'nuxt-laravel': ['frontend-vue', 'backend-laravel'],
+            'react-express': ['frontend-react', 'backend-express'],
         };
         const skillName = stackMapping[answers.stack];
         if (skillName) {
-            await copySkill(skillsSrc, skillsDest, skillName);
+            if (Array.isArray(skillName)) {
+                for (const name of skillName) {
+                    await copySkill(skillsSrc, skillsDest, name);
+                }
+            } else {
+                await copySkill(skillsSrc, skillsDest, skillName);
+            }
         }
     }
 
     // 5. Copy DevOps (Optional)
-    if (answers.includeDevOps) {
+    if (['backend', 'fullstack', 'devops'].includes(answers.type)) {
         await copySkill(skillsSrc, skillsDest, 'devops-docker');
         await copySkill(skillsSrc, skillsDest, 'devops-cicd');
     }
@@ -436,6 +492,21 @@ async function setupAntigravity(kitRoot, dest, answers) {
         await fs.copy(templateAgentDir, agentDir, { overwrite: false });
     }
 
+    // Explicitly Copy Resources (Rules, Workflows, Knowledge) from templates root
+    // This fixes the issue where structure is missing if not inside .agent template
+    const knowledgeSrc = path.join(kitRoot, 'knowledge');
+    if (await fs.pathExists(knowledgeSrc)) {
+        await fs.copy(knowledgeSrc, path.join(agentDir, 'knowledge'));
+    }
+    const rulesDirSrc = path.join(kitRoot, 'rules');
+    if (await fs.pathExists(rulesDirSrc)) {
+        await fs.copy(rulesDirSrc, path.join(agentDir, 'rules'));
+    }
+    const workflowsSrc = path.join(kitRoot, 'workflows');
+    if (await fs.pathExists(workflowsSrc)) {
+        await fs.copy(workflowsSrc, path.join(agentDir, 'workflows'));
+    }
+
     // Copy Skills
     const skillsSrc = path.join(kitRoot, 'skills');
     const skillsDest = path.join(agentDir, 'skills');
@@ -454,6 +525,43 @@ async function setupAntigravity(kitRoot, dest, answers) {
                 await fs.copy(roleSrc, path.join(skillsDest, `role-${role}`));
             }
         }
+    }
+
+    // Copy Stack Skills (Add missing logic)
+    if (answers.stack) {
+        const stackMapping = {
+            'nestjs': 'backend-nestjs',
+            'laravel': 'backend-laravel',
+            'go': 'backend-go',
+            'python': 'backend-python',
+            'express': 'backend-express',
+            'nextjs': 'frontend-nextjs',
+            'vue': 'frontend-vue',
+            'react': 'frontend-react',
+            'flutter': 'mobile-flutter',
+            'react-native': 'mobile-react-native',
+            'swiftui': 'mobile-swiftui',
+            'android': 'mobile-android',
+            'nextjs-nestjs': ['frontend-nextjs', 'backend-nestjs'],
+            'nuxt-laravel': ['frontend-vue', 'backend-laravel'],
+            'react-express': ['frontend-react', 'backend-express'],
+        };
+        const skillName = stackMapping[answers.stack];
+        if (skillName) {
+            if (Array.isArray(skillName)) {
+                for (const name of skillName) {
+                    await copySkill(skillsSrc, skillsDest, name);
+                }
+            } else {
+                await copySkill(skillsSrc, skillsDest, skillName);
+            }
+        }
+    }
+
+    // Copy DevOps (Optional)
+    if (['backend', 'fullstack', 'devops'].includes(answers.type)) {
+        await copySkill(skillsSrc, skillsDest, 'devops-docker');
+        await copySkill(skillsSrc, skillsDest, 'devops-cicd');
     }
 }
 
