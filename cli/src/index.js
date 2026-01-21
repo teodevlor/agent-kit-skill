@@ -16,7 +16,7 @@ const program = new Command();
 // i18n messages
 const messages = {
     en: {
-        welcome: '🚀 Agent Kit Setup Wizard',
+        welcome: 'Agent Kit Setup Wizard',
         ideQuestion: 'Which IDE are you using?',
         languageQuestion: 'Preferred language for prompts and responses:',
         projectTypeQuestion: 'What type of project is this?',
@@ -31,210 +31,212 @@ const messages = {
         configCreated: 'Config file created: agent-kit-skill.json',
     },
     vi: {
-        welcome: '🚀 Trình Cài Đặt Agent Kit',
-        ideQuestion: 'Bạn đang sử dụng IDE nào?',
-        languageQuestion: 'Ngôn ngữ cho prompt và phản hồi:',
-        projectTypeQuestion: 'Loại dự án của bạn là gì?',
-        techStackQuestion: 'Chọn Tech Stack chính:',
-        databaseQuestion: 'Chọn Database:',
-        rolesQuestion: 'Bao gồm các Vai trò chuyên biệt (Architect, Reviewer, Debugger)?',
-        downloadQuestion: 'Tải template codebase mẫu?',
-        settingUp: 'Đang cài đặt Agent Kit...',
-        success: 'Cài đặt hoàn tất! Agent Kit đã sẵn sàng.',
-        nextSteps: 'Bước tiếp theo:',
-        failed: 'Cài đặt thất bại!',
-        configCreated: 'File config đã tạo: agent-kit-skill.json',
+        welcome: 'Trinh Cai Dat Agent Kit',
+        ideQuestion: 'Ban dang su dung IDE nao?',
+        languageQuestion: 'Ngon ngu cho prompt va phan hoi:',
+        projectTypeQuestion: 'Loai du an cua ban la gi?',
+        techStackQuestion: 'Chon Tech Stack chinh:',
+        databaseQuestion: 'Chon Database:',
+        rolesQuestion: 'Bao gom cac Vai tro chuyen biet (Architect, Reviewer, Debugger)?',
+        downloadQuestion: 'Tai template codebase mau?',
+        settingUp: 'Dang cai dat Agent Kit...',
+        success: 'Cai dat hoan tat! Agent Kit da san sang.',
+        nextSteps: 'Buoc tiep theo:',
+        failed: 'Cai dat that bai!',
+        configCreated: 'File config da tao: agent-kit-skill.json',
     }
 };
 
 program
     .name('agent-kit')
     .description('CLI to setup AI Agent Rules & Skills for Cursor, Windsurf, and Antigravity')
-    .version('1.0.0');
+    .version('1.0.1');
 
 program
-    .command('init')
+    .command('init', { isDefault: true })
     .description('Initialize Agent Kit in the current directory')
-    .action(async () => {
-        console.log(chalk.bold.blue('\n🚀 Agent Kit Setup Wizard\n'));
+    .action(() => runInit());
 
-        // Step 1: Ask for language first
-        const langAnswer = await inquirer.prompt([
-            {
-                type: 'list',
-                name: 'language',
-                message: 'Select language / Chọn ngôn ngữ:',
-                choices: [
-                    { name: 'English', value: 'en' },
-                    { name: 'Tiếng Việt', value: 'vi' },
-                ],
-            },
-        ]);
+async function runInit() {
+    console.log(chalk.bold.blue('\nAgent Kit Setup Wizard\n'));
 
-        const lang = langAnswer.language;
-        const msg = messages[lang];
+    // Step 1: Ask for language first
+    const langAnswer = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'language',
+            message: 'Select language / Chon ngon ngu:',
+            choices: [
+                { name: 'English', value: 'en' },
+                { name: 'Tieng Viet', value: 'vi' },
+            ],
+        },
+    ]);
 
-        // Step 2: Ask remaining questions in selected language
-        const answers = await inquirer.prompt([
-            {
-                type: 'list',
-                name: 'ide',
-                message: msg.ideQuestion,
-                choices: [
-                    { name: 'Cursor (Recommended)', value: 'cursor' },
-                    { name: 'Windsurf (Codeium)', value: 'windsurf' },
-                    { name: 'Antigravity (Google)', value: 'antigravity' },
-                ],
-            },
-            {
-                type: 'list',
-                name: 'type',
-                message: msg.projectTypeQuestion,
-                choices: [
-                    { name: lang === 'vi' ? 'Backend API' : 'Backend API', value: 'backend' },
-                    { name: lang === 'vi' ? 'Frontend Web' : 'Frontend Web', value: 'frontend' },
-                    { name: lang === 'vi' ? 'DevOps / Hạ tầng' : 'DevOps / Infrastructure', value: 'devops' },
-                    { name: lang === 'vi' ? 'Fullstack' : 'Fullstack', value: 'fullstack' },
-                    { name: lang === 'vi' ? 'Mobile App' : 'Mobile App', value: 'mobile' },
-                ],
-            },
-            // Backend stack options
-            {
-                type: 'list',
-                name: 'stack',
-                message: msg.techStackQuestion,
-                when: (answers) => answers.type === 'backend',
-                choices: [
-                    { name: 'NestJS (Node.js TypeScript)', value: 'nestjs' },
-                    { name: 'Laravel (PHP)', value: 'laravel' },
-                    { name: 'Go (Golang)', value: 'go' },
-                    { name: 'Python (FastAPI)', value: 'python' },
-                    { name: 'Node.js (Express)', value: 'express' },
-                ],
-            },
-            // Frontend stack options
-            {
-                type: 'list',
-                name: 'stack',
-                message: msg.techStackQuestion,
-                when: (answers) => answers.type === 'frontend',
-                choices: [
-                    { name: 'Next.js (React)', value: 'nextjs' },
-                    { name: 'Vue 3 / Nuxt 3', value: 'vue' },
-                    { name: 'React (Vite)', value: 'react' },
-                ],
-            },
-            // Fullstack stack options
-            {
-                type: 'list',
-                name: 'stack',
-                message: msg.techStackQuestion,
-                when: (answers) => answers.type === 'fullstack',
-                choices: [
-                    { name: 'Next.js + NestJS', value: 'nextjs-nestjs' },
-                    { name: 'Nuxt 3 + Laravel', value: 'nuxt-laravel' },
-                    { name: 'React + Express', value: 'react-express' },
-                ],
-            },
-            // Mobile stack options
-            {
-                type: 'list',
-                name: 'stack',
-                message: msg.techStackQuestion,
-                when: (answers) => answers.type === 'mobile',
-                choices: [
-                    { name: 'Flutter (Dart)', value: 'flutter' },
-                    { name: 'React Native', value: 'react-native' },
-                    { name: 'SwiftUI (iOS)', value: 'swiftui' },
-                    { name: 'Kotlin (Android)', value: 'android' },
-                ],
-            },
-            // Database selection
-            {
-                type: 'list',
-                name: 'database',
-                message: msg.databaseQuestion,
-                when: (answers) => ['backend', 'fullstack'].includes(answers.type),
-                choices: [
-                    { name: 'PostgreSQL', value: 'postgresql' },
-                    { name: 'MySQL', value: 'mysql' },
-                    { name: 'MongoDB', value: 'mongodb' },
-                    { name: 'SQLite', value: 'sqlite' },
-                    { name: lang === 'vi' ? 'Khác / Không có' : 'Other / None', value: 'none' },
-                ],
-            },
-            // Role selection
-            {
-                type: 'checkbox',
-                name: 'roles',
-                message: msg.rolesQuestion,
-                choices: [
-                    { name: 'Implementer (Default)', value: 'implementer', checked: true },
-                    { name: 'Architect (System Design)', value: 'architect', checked: true },
-                    { name: 'Reviewer (Code Review)', value: 'reviewer', checked: true },
-                    { name: 'Debugger (Bug Fixing)', value: 'debugger', checked: true },
-                ],
-            },
-            // Codebase download option
-            {
-                type: 'confirm',
-                name: 'downloadCodebase',
-                message: msg.downloadQuestion,
-                default: false,
-            },
-        ]);
+    const lang = langAnswer.language;
+    const msg = messages[lang];
 
-        // Merge language into answers
-        answers.language = lang;
+    // Step 2: Ask remaining questions in selected language
+    const answers = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'ide',
+            message: msg.ideQuestion,
+            choices: [
+                { name: 'Cursor (Recommended)', value: 'cursor' },
+                { name: 'Windsurf (Codeium)', value: 'windsurf' },
+                { name: 'Antigravity (Google)', value: 'antigravity' },
+            ],
+        },
+        {
+            type: 'list',
+            name: 'type',
+            message: msg.projectTypeQuestion,
+            choices: [
+                { name: lang === 'vi' ? 'Backend API' : 'Backend API', value: 'backend' },
+                { name: lang === 'vi' ? 'Frontend Web' : 'Frontend Web', value: 'frontend' },
+                { name: lang === 'vi' ? 'DevOps / Ha tang' : 'DevOps / Infrastructure', value: 'devops' },
+                { name: lang === 'vi' ? 'Fullstack' : 'Fullstack', value: 'fullstack' },
+                { name: lang === 'vi' ? 'Mobile App' : 'Mobile App', value: 'mobile' },
+            ],
+        },
+        // Backend stack options
+        {
+            type: 'list',
+            name: 'stack',
+            message: msg.techStackQuestion,
+            when: (answers) => answers.type === 'backend',
+            choices: [
+                { name: 'NestJS (Node.js TypeScript)', value: 'nestjs' },
+                { name: 'Laravel (PHP)', value: 'laravel' },
+                { name: 'Go (Golang)', value: 'go' },
+                { name: 'Python (FastAPI)', value: 'python' },
+                { name: 'Node.js (Express)', value: 'express' },
+            ],
+        },
+        // Frontend stack options
+        {
+            type: 'list',
+            name: 'stack',
+            message: msg.techStackQuestion,
+            when: (answers) => answers.type === 'frontend',
+            choices: [
+                { name: 'Next.js (React)', value: 'nextjs' },
+                { name: 'Vue 3 / Nuxt 3', value: 'vue' },
+                { name: 'React (Vite)', value: 'react' },
+            ],
+        },
+        // Fullstack stack options
+        {
+            type: 'list',
+            name: 'stack',
+            message: msg.techStackQuestion,
+            when: (answers) => answers.type === 'fullstack',
+            choices: [
+                { name: 'Next.js + NestJS', value: 'nextjs-nestjs' },
+                { name: 'Nuxt 3 + Laravel', value: 'nuxt-laravel' },
+                { name: 'React + Express', value: 'react-express' },
+            ],
+        },
+        // Mobile stack options
+        {
+            type: 'list',
+            name: 'stack',
+            message: msg.techStackQuestion,
+            when: (answers) => answers.type === 'mobile',
+            choices: [
+                { name: 'Flutter (Dart)', value: 'flutter' },
+                { name: 'React Native', value: 'react-native' },
+                { name: 'SwiftUI (iOS)', value: 'swiftui' },
+                { name: 'Kotlin (Android)', value: 'android' },
+            ],
+        },
+        // Database selection
+        {
+            type: 'list',
+            name: 'database',
+            message: msg.databaseQuestion,
+            when: (answers) => ['backend', 'fullstack'].includes(answers.type),
+            choices: [
+                { name: 'PostgreSQL', value: 'postgresql' },
+                { name: 'MySQL', value: 'mysql' },
+                { name: 'MongoDB', value: 'mongodb' },
+                { name: 'SQLite', value: 'sqlite' },
+                { name: lang === 'vi' ? 'Khac / Khong co' : 'Other / None', value: 'none' },
+            ],
+        },
+        // Role selection
+        {
+            type: 'checkbox',
+            name: 'roles',
+            message: msg.rolesQuestion,
+            choices: [
+                { name: 'Implementer (Default)', value: 'implementer', checked: true },
+                { name: 'Architect (System Design)', value: 'architect', checked: true },
+                { name: 'Reviewer (Code Review)', value: 'reviewer', checked: true },
+                { name: 'Debugger (Bug Fixing)', value: 'debugger', checked: true },
+            ],
+        },
+        // Codebase download option
+        {
+            type: 'confirm',
+            name: 'downloadCodebase',
+            message: msg.downloadQuestion,
+            default: false,
+        },
+    ]);
 
-        const spinner = ora(msg.settingUp).start();
+    // Merge language into answers
+    answers.language = lang;
 
-        try {
-            const kitRoot = path.join(__dirname, '../templates');
-            const currentDir = process.cwd();
+    const spinner = ora(msg.settingUp).start();
 
-            // Setup based on IDE
-            if (answers.ide === 'cursor') {
-                await setupCursor(kitRoot, currentDir, answers);
-            } else if (answers.ide === 'windsurf') {
-                await setupWindsurf(kitRoot, currentDir, answers);
-            } else if (answers.ide === 'antigravity') {
-                await setupAntigravity(kitRoot, currentDir, answers);
-            }
+    try {
+        const kitRoot = path.join(__dirname, '../templates');
+        const currentDir = process.cwd();
 
-            // Generate JSON config file
-            await generateJsonConfig(currentDir, answers);
-
-            // Generate AI context file based on language
-            await generateContextFile(currentDir, answers);
-
-            spinner.succeed(chalk.green(msg.success));
-            console.log(chalk.cyan(`\n📄 ${msg.configCreated}`));
-            console.log(chalk.yellow(`\n${msg.nextSteps}`));
-
-            if (answers.ide === 'cursor') {
-                console.log('1. Open .cursorrules to see active rules');
-                console.log('2. Type / in Chat to use Skills');
-                console.log('3. Edit agent-kit-skill.json to customize settings');
-            } else if (answers.ide === 'windsurf') {
-                console.log('1. Check AGENTS.md in root');
-                console.log('2. Use @skill-name in Cascade');
-                console.log('3. Edit agent-kit-skill.json to customize settings');
-            } else if (answers.ide === 'antigravity') {
-                console.log('1. Check .agent/rules/ for loaded rules');
-                console.log('2. Use /skill-name to invoke skills');
-                console.log('3. Edit agent-kit-skill.json to customize settings');
-            }
-
-            if (answers.downloadCodebase) {
-                console.log(chalk.yellow('\n⚠️  Codebase download feature coming soon!'));
-            }
-
-        } catch (error) {
-            spinner.fail(chalk.red(msg.failed));
-            console.error(error);
+        // Setup based on IDE
+        if (answers.ide === 'cursor') {
+            await setupCursor(kitRoot, currentDir, answers);
+        } else if (answers.ide === 'windsurf') {
+            await setupWindsurf(kitRoot, currentDir, answers);
+        } else if (answers.ide === 'antigravity') {
+            await setupAntigravity(kitRoot, currentDir, answers);
         }
-    });
+
+        // Generate JSON config file
+        await generateJsonConfig(currentDir, answers);
+
+        // Generate AI context file based on language
+        await generateContextFile(currentDir, answers);
+
+        spinner.succeed(chalk.green(msg.success));
+        console.log(chalk.cyan(`\n> ${msg.configCreated}`));
+        console.log(chalk.yellow(`\n${msg.nextSteps}`));
+
+        if (answers.ide === 'cursor') {
+            console.log('1. Open .cursorrules to see active rules');
+            console.log('2. Type / in Chat to use Skills');
+            console.log('3. Edit agent-kit-skill.json to customize settings');
+        } else if (answers.ide === 'windsurf') {
+            console.log('1. Check AGENTS.md in root');
+            console.log('2. Use @skill-name in Cascade');
+            console.log('3. Edit agent-kit-skill.json to customize settings');
+        } else if (answers.ide === 'antigravity') {
+            console.log('1. Check .agent/rules/ for loaded rules');
+            console.log('2. Use /skill-name to invoke skills');
+            console.log('3. Edit agent-kit-skill.json to customize settings');
+        }
+
+        if (answers.downloadCodebase) {
+            console.log(chalk.yellow('\n!  Codebase download feature coming soon!'));
+        }
+
+    } catch (error) {
+        spinner.fail(chalk.red(msg.failed));
+        console.error(error);
+    }
+};
 
 // Update command - reload config
 program
@@ -288,13 +290,14 @@ async function setupCursor(kitRoot, dest, answers) {
     const cursorDir = path.join(dest, '.cursor');
     await fs.ensureDir(cursorDir);
 
-    // Copy .cursorrules (template)
+    console.log(chalk.dim('  - Setting up .cursor...'));
+
+    // 1. Copy .cursorrules (Entry point)
     const rulesSrc = path.join(kitRoot, 'cursorrules.template');
     if (await fs.pathExists(rulesSrc)) {
         await fs.copy(rulesSrc, path.join(dest, '.cursorrules'));
     }
 
-    // Copy Skills
     const skillsSrc = path.join(kitRoot, 'skills');
     const skillsDest = path.join(cursorDir, 'skills');
     await fs.ensureDir(skillsDest);
@@ -315,7 +318,7 @@ async function setupCursor(kitRoot, dest, answers) {
         }
     }
 
-    // Copy Stack Specific Skills
+    // 4. Copy Tech Stack (Strictly Selected)
     if (answers.stack) {
         const stackMapping = {
             'nestjs': 'backend-nestjs',
@@ -334,15 +337,11 @@ async function setupCursor(kitRoot, dest, answers) {
             'nuxt-laravel': ['frontend-vue', 'backend-laravel'],
             'react-express': ['frontend-react', 'backend-express'],
         };
-
-        const skillNames = stackMapping[answers.stack];
-        if (skillNames) {
-            const skills = Array.isArray(skillNames) ? skillNames : [skillNames];
-            for (const skillName of skills) {
-                const src = path.join(skillsSrc, skillName);
-                if (await fs.pathExists(src)) {
-                    await fs.copy(src, path.join(skillsDest, skillName));
-                }
+        const skillName = stackMapping[answers.stack];
+        if (skillName) {
+            const src = path.join(skillsSrc, skillName);
+            if (await fs.pathExists(src)) {
+                await fs.copy(src, path.join(skillsDest, skillName));
             }
         }
     }
@@ -365,13 +364,14 @@ async function setupWindsurf(kitRoot, dest, answers) {
     await fs.ensureDir(windsurfDir);
     await fs.ensureDir(path.join(windsurfDir, 'rules'));
 
-    // Copy AGENTS.md (template)
+    console.log(chalk.dim('  - Setting up .windsurf...'));
+
+    // 1. Copy AGENTS.md (Entry point)
     const agentsSrc = path.join(kitRoot, 'agents.md.template');
     if (await fs.pathExists(agentsSrc)) {
         await fs.copy(agentsSrc, path.join(dest, 'AGENTS.md'));
     }
 
-    // Copy Skills to .windsurf/skills
     const skillsSrc = path.join(kitRoot, 'skills');
     const skillsDest = path.join(windsurfDir, 'skills');
     await fs.ensureDir(skillsDest);
@@ -403,11 +403,23 @@ async function setupWindsurf(kitRoot, dest, answers) {
         };
         const skillName = stackMapping[answers.stack];
         if (skillName) {
-            const src = path.join(skillsSrc, skillName);
-            if (await fs.pathExists(src)) {
-                await fs.copy(src, path.join(skillsDest, skillName));
-            }
+            await copySkill(skillsSrc, skillsDest, skillName);
         }
+    }
+
+    // 5. Copy DevOps (Optional)
+    if (answers.includeDevOps) {
+        await copySkill(skillsSrc, skillsDest, 'devops-docker');
+        await copySkill(skillsSrc, skillsDest, 'devops-cicd');
+    }
+}
+
+// Helper to copy safely
+async function copySkill(srcRoot, destRoot, skillName) {
+    const src = path.join(srcRoot, skillName);
+    const dest = path.join(destRoot, skillName);
+    if (await fs.pathExists(src)) {
+        await fs.copy(src, dest);
     }
 }
 
