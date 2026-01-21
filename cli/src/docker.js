@@ -165,8 +165,12 @@ function generateDockerCompose(projectName, stack, database) {
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_USER=user
+      - DB_USERNAME=user
       - DB_PASSWORD=password
-      - DB_NAME=${projectName}`;
+      - DB_NAME=${projectName}
+      - DB_DATABASE=${projectName}`;
+        if (stack === 'laravel') dbEnv += `\n      - DB_CONNECTION=pgsql`;
+
         dbDepends = `
     depends_on:
       - postgres`;
@@ -188,8 +192,12 @@ function generateDockerCompose(projectName, stack, database) {
       - DB_HOST=mysql
       - DB_PORT=3306
       - DB_USER=user
+      - DB_USERNAME=user
       - DB_PASSWORD=password
+      - DB_NAME=${projectName}
       - DB_DATABASE=${projectName}`;
+        if (stack === 'laravel') dbEnv += `\n      - DB_CONNECTION=mysql`;
+
         dbDepends = `
     depends_on:
       - mysql`;
@@ -211,6 +219,28 @@ function generateDockerCompose(projectName, stack, database) {
 
     const appPort = portMapping[stack] || "3000";
 
+    // Determine working directory and volumes based on stack
+    let workDir = "/app";
+    let volumes = [
+        "- .:/app",
+        "- /app/node_modules"
+    ];
+
+    if (stack === 'laravel') {
+        workDir = "/var/www";
+        volumes = [
+            "- .:/var/www",
+            "- /var/www/vendor"
+        ];
+    } else if (stack === 'python' || stack === 'go') {
+        // Python/Go usually don't need node_modules volume hack unless using Node tools
+        volumes = [
+            "- .:/app"
+        ];
+    }
+
+    const volumesConfig = volumes.map(v => `      ${v}`).join('\n');
+
     return `version: '3.8'
 
 services:
@@ -223,8 +253,7 @@ services:
     ports:
       - '${appPort}:${appPort}'
     volumes:
-      - .:/app
-      - /app/node_modules
+${volumesConfig}
     environment:
       - NODE_ENV=development${dbEnv}
       - PORT=${appPort}
@@ -278,7 +307,7 @@ function getScaffold(stack) {
     return scaffolds[stack] || {};
 }
 
-module.exports = {
+export {
     generateDockerfile,
     generateDockerCompose,
     getScaffold
